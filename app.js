@@ -56,6 +56,7 @@ app.use('/api',(req,res,next)=>{win++;
   return res.set('Retry-After','2').status(429).json({error:'busy',retryAfter:2})}
  next()});
 app.get('/',(req,res)=>res.sendFile(path.join(__dirname,'public/portal.html')));
+app.use('/fonts',express.static(path.join(__dirname,'public/fonts'),{maxAge:'7d'}));
 app.get('/theme.css',(req,res)=>res.sendFile(path.join(__dirname,'public/theme.css')));
 const shape=(rec,src,stale)=>{const c=db.calc(rec.marks);return{roll:rec.roll,name:rec.name,subjects:db.SUBJECTS.map((n,i)=>({name:n,marks:rec.marks[i],pass:rec.marks[i]>=40})),total:c.total,max:500,percent:c.percent,grade:c.grade,pass:c.pass,src,stale:!!stale}};
 async function lookup(roll){busy(3);
