@@ -1,0 +1,1 @@
+{"name":"results-day-portal","version":"2.0.0","private":true,"engines":{"node":">=22.5"},"scripts":{"start":"node --disable-warning=ExperimentalWarning supervisor.js","chaos":"node chaos.js"},"dependencies":{"express":"^4.22.3","pdfkit":"^0.20.2","read-excel-file":"^5.8.8"}}

@@ -1,0 +1,61 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Health console</title>
+<link rel=stylesheet href=/theme.css>
+<style>
+.banner{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:16px 28px;border-bottom:1px solid var(--rule);border-left:8px solid var(--c,var(--gy));background:var(--panel)}
+.banner h1{font-size:22px;margin:0;letter-spacing:-.02em;color:var(--c)}.banner .r{margin-left:auto;display:flex;gap:28px;color:var(--mu);font-size:13px}.banner .r b{color:var(--ink);font-size:20px;display:block;font-variant-numeric:tabular-nums}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));border:1px solid var(--rule);border-radius:6px;background:var(--panel);margin-bottom:16px;overflow:hidden}
+.tile{padding:14px 18px;border-left:1px solid var(--rule);border-top:4px solid var(--c)}.tile:first-child{border-left:0}.tile .s{font-size:24px;font-weight:800;color:var(--c);letter-spacing:-.02em}
+.live{background-image:repeating-linear-gradient(transparent 0 31px,var(--rule) 31px 32px);background-position:0 12px}.live .big{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:4px 0}
+.chaos{display:flex;flex-wrap:wrap;gap:8px}.chaos h3{width:100%;font-size:13px;margin:6px 0 0;color:var(--mu);font-weight:600}
+.tl{list-style:none;margin:8px 0 0 6px;padding:0 0 0 18px;border-left:2px solid var(--rule)}.tl li{position:relative;padding:2px 0;font-size:14px}.tl li:before{content:"";position:absolute;left:-24px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--c)}
+.inc{padding:14px 0;border-bottom:1px solid var(--rule)}.inc:last-child{border:0}
+</style>
+<header class=bar><span class=brand><span>Health</span> console</span><a data-p=5100 data-u=/>Student portal</a><a data-p=5100 data-u=/admin>Admin panel</a>
+<label class=sw>Self-healing <input type=checkbox id=hsw aria-label="Self-healing"></label></header>
+<div class=banner id=bn><h1>Checking…</h1><div class=r><div><b id=tm>–</b>since last failure</div><div><b id=rc>0</b>recoveries</div><div><b id=rs>0</b>restarts</div></div></div>
+<main class=wrap>
+<div class=tiles id=tiles></div>
+<div class=two>
+<section class="panel live"><h2>What a student sees <span class=mu style="font-weight:400">· roll <input id=lr value=1001 style="width:76px;padding:3px 6px"></span></h2><div id=lv>Loading…</div><p class=mu style="margin:10px 0 0;font-size:13px">The corrupt buttons hit this roll.</p></section>
+<section class=panel><h2>Break something</h2><div class=chaos id=ch></div><div id=fl class=mu style="margin-top:12px;font-size:13px"></div></section></div>
+<section class=panel><h2>Recovery measurements</h2><table id=tb></table></section>
+<section class=panel><h2>Incident log</h2><div id=log></div></section>
+</main>
+<script>
+document.querySelectorAll('[data-p]').forEach(a=>a.href='http://'+location.hostname+':'+a.dataset.p+a.dataset.u);
+const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>]/g,c=>'&#'+c.charCodeAt(0)+';');let t0=null,seen=false;
+const COL={green:'var(--ok)',amber:'var(--wn)',red:'var(--er)',gray:'var(--gy)'},LBL={green:'Healthy',amber:'Degraded',red:'Failing',gray:'Unknown'},SC={detected:'var(--er)',diagnosed:'var(--wn)',action:'var(--navy)',recovered:'var(--ok)',failed:'var(--er)'};
+const KN={process:'App process',db:'Database',data:'Data integrity',traffic:'Traffic',download:'Downloads',print:'Printing'};
+const CH=[['dbslow','Slow database'],['dbdown','Database down'],['corrupt','Corrupt a record'],['flood','10× traffic flood'],['freeze','Freeze the app'],['crash','Crash the app'],['pdf-fail','Break PDF download'],['print-fail','Break printing'],['corrupt-both','Corrupt record and backup','bad'],['stop-flood','Stop traffic flood','ghost'],['clear','Reset DB faults (manual)','ghost'],['reseed','Human reset data','ghost']];
+$('ch').innerHTML=CH.map(([t,l,k])=>`<button class="btn ${k||''}" onclick="inj('${t}')">${l}</button>`).join('');
+const inj=t=>{fetch('/chaos/'+t+'?roll='+encodeURIComponent($('lr').value),{method:'POST'});if(t!=='reseed'){t0=Date.now();seen=false}};
+$('hsw').onchange=()=>fetch('/chaos/healing-'+($('hsw').checked?'on':'off'),{method:'POST'});
+const f=n=>n==null?'–':n.toFixed(1)+' s',tm=t=>new Date(t).toLocaleTimeString([],{hour12:false})+'.'+String(t%1000).padStart(3,'0');
+async function tick(){let s;try{s=await(await fetch('/api/status')).json()}catch{return}
+ const a=s.app,P={up:['green','Running'],starting:['amber','Starting'],unresponsive:['amber','Not responding'],down:['red','Down']}[s.proc];
+ if(document.activeElement!==$('hsw'))$('hsw').checked=s.healing;
+ const T=[{n:'App process',c:P[0],d:P[1]+', '+s.restarts+' restarts'},
+  {n:'Database',c:!a?'gray':(a.cb==='OPEN'||a.dbErr)?'red':(a.cb==='HALF'||a.dbMs>500)?'amber':'green',d:a?'Breaker '+a.cb+', '+a.dbMs+' ms':'No data'},
+  {n:'Data integrity',c:!a?'gray':a.held>0?'red':a.bad>0?'amber':'green',d:a?a.bad+' bad, '+a.held+' on hold':'No data'},
+  {n:'Traffic',c:!a?'gray':a.shedding?'amber':(a.rps>120&&!a.healing)?'red':'green',d:a?a.rps+' req/s'+(a.shedding?', shedding':''):'No data'},
+  {n:'Downloads',c:!a?'gray':a.pdfBroken?'red':'green',d:a?(a.pdfBroken?'PDF renderer crashed':'PDF renderer OK'):'No data'},
+  {n:'Printing',c:!a?'gray':a.printBroken?'red':'green',d:a?(a.printBroken?'Print service down':'Print service OK'):'No data'}];
+ $('tiles').innerHTML=T.map(x=>`<div class=tile style="--c:${COL[x.c]}"><div class=mu>${x.n}</div><div class=s>${LBL[x.c]}</div><div class=mu style="font-size:13px">${x.d}</div></div>`).join('');
+ const red=T.filter(x=>x.c==='red'),amb=T.filter(x=>x.c==='amber'),open=s.incidents.some(i=>i.state==='open'),all=T.every(x=>x.c==='green');
+ $('bn').style.setProperty('--c',red.length?COL.red:(amb.length||open)?COL.amber:COL.green);
+ $('bn').querySelector('h1').textContent=red.length?'Failing: '+red.map(x=>x.n.toLowerCase()).join(', '):(amb.length||open)?'Degraded, recovering':'All systems healthy';
+ $('rc').textContent=s.recoveries;$('rs').textContent=s.restarts;
+ if(t0){if(!all)seen=true;$('tm').textContent=((Date.now()-t0)/1000).toFixed(1)+' s';if(all&&seen)t0=null}
+ $('fl').textContent=s.floodStats?(s.floodStats.running?'Flood running: ':'Last flood: ')+s.floodStats.N+' requests, '+s.floodStats.ok+' served, '+s.floodStats.shed+' shed (429), '+s.floodStats.err+' errors.':'';
+ $('tb').innerHTML='<tr><th>Failure</th><th>Status</th><th>Time to detect</th><th>Time to recover</th></tr>'+(s.incidents.slice(0,10).map(i=>`<tr><td>${KN[i.kind]||i.kind}</td><td><span class="tag ${i.state==='recovered'?'ok':i.state==='open'?'wn':'er'}">${i.state}</span></td><td>${f(i.ttd)}</td><td>${f(i.ttr)}</td></tr>`).join('')||'<tr><td colspan=4 class=mu>No incidents yet. Break something above.</td></tr>');
+ $('log').innerHTML=s.incidents.map(i=>`<div class=inc><b>${KN[i.kind]||i.kind}</b> <span class="tag ${i.state==='recovered'?'ok':i.state==='open'?'wn':'er'}">${i.state}</span><ul class=tl>${i.steps.map(x=>`<li style="--c:${SC[x.stage]}"><span class=mu>${tm(x.t)}</span> <b>${x.stage}</b>: ${esc(x.msg)}</li>`).join('')}</ul></div>`).join('')||'<span class=mu>Nothing logged yet.</span>'}
+(async function live(){try{const p=await(await fetch('/api/probe/'+encodeURIComponent($('lr').value))).json(),b=p.body||{};let c='var(--ok)',m='Live from the database';
+ if(p.status===200){if(b.percent>100){c='var(--er)';m='Invalid marks are being shown to students'}else if(b.src==='cache'){c='var(--wn)';m='Last saved result, served from cache'}else if(b.src==='repaired'){m='Repaired from the verified backup'}}
+ else if(p.status===429){c='var(--wn)';m='Request shed (429). The portal retries for the student.'}
+ else if(p.status===423){c='var(--er)';m='Result on hold. It cannot self-repair, so a person must fix it.'}
+ else if(p.status===403){c='var(--wn)';m='Results are not published yet (admin setting)'}
+ else{c='var(--er)';m='Error: '+esc(b.error||p.status)}
+ $('lv').innerHTML=`<div class=big style="color:${c}">${p.status===200?esc(b.name)+', '+b.percent+'%, grade '+b.grade:'No result shown'}</div><b style="color:${c}">${m}</b><div class=mu style="font-size:13px">HTTP ${p.status}, ${p.ms} ms${b.src?', source: '+b.src:''}</div>`}catch{}
+ setTimeout(live,1000)})();
+setInterval(tick,1000);tick();
+</script>
