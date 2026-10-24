@@ -50,4 +50,4 @@ The console card "What a student sees" looks up one roll every second. Corrupt r
 - The admin password is a demo default.
 
 ## AI Use Declaration
-List every AI tool you used and what you changed or checked yourself, and make sure you can explain every file.
+ChatCPT and Cloud AI
