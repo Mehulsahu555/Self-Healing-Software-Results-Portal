@@ -19,12 +19,14 @@ SQLite through Node's built-in `node:sqlite`: `data/portal.db` (live results, qu
 | 3 | Circuit breaker | Slow or dead DB |
 | 4 | Fallback to cached last-known result | DB outage |
 | 6 | Self-repairing data (checksum, quarantine, restore from backup) | Corrupt records |
-| 7 | Load shedding (120 req/s, 429 plus Retry-After) | 10x traffic spike |
 
 Each incident is logged as Detected, Diagnosed, Action, Recovered in `logs/incidents.jsonl` and in the console, with time to detect and time to recover.
 
 ## Student result page
 Shows five subject marks, total, percentage, grade and pass or fail. Students can download a PDF marksheet (`/api/result/<roll>/pdf`) or print it. The PDF goes through the same healing path, so it still works from the cache during a database outage.
+
+## Fonts
+Space Grotesk (headings and big numbers), Inter (text) and JetBrains Mono (roll numbers), bundled in `public/fonts` so they work offline. All three are open source under the SIL Open Font License. Sizes come from one scale in `public/theme.css` (`--fs-xs` to `--fs-display`).
 
 ## Admin panel
 Signed-in access only: a password page comes first, then a signed, HTTP-only session cookie lasting 8 hours (survives watchdog restarts). Five wrong attempts lock sign-in for 30 seconds. Publish or hide results, statistics and grade distribution, upload Excel (.xlsx) or CSV (roll, name, five subject marks) with validation, add or edit one student, search, delete, export CSV, activity log, and a quarantine view of records the system repaired.
@@ -52,5 +54,4 @@ The console card "What a student sees" looks up one roll every second. Corrupt r
 ## AI Use Declaration
 List every AI tool you used and what you changed or checked yourself, and make sure you can explain every file.
 
-## Fonts
-Space Grotesk (headings and big numbers), Inter (text) and JetBrains Mono (roll numbers), bundled in `public/fonts` so they work offline. All three are open source under the SIL Open Font License. Sizes come from one scale in `public/theme.css` (`--fs-xs` to `--fs-display`).
+
