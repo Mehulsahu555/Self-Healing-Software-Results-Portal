@@ -33,13 +33,14 @@ async function poll(){
    step(pinc,'process','diagnosed','Process alive but unresponsive: event loop frozen');
    step(pinc,'process','action','SIGKILL and restart');killing=true;restarts++;child.kill('SIGKILL');setTimeout(spawnApp,300)}}}
 let flooding=false;
-async function flood(){if(flooding)return;flooding=true;const N=1500,end=Date.now()+30000;let tot=0,ok=0,shed=0,err=0; // waves of 1500 requests until stopped (30 s cap)
+async function flood(){if(flooding)return;flooding=true;const N=1500,end=Date.now()+15000;let tot=0,ok=0,shed=0,err=0; // waves of 1500 requests until stopped (30 s cap)
  while(flooding&&Date.now()<end){await Promise.all(Array.from({length:N},async(_,i)=>{try{const r=await fetch(APP+'/api/result/'+(1001+i%200),{signal:AbortSignal.timeout(8000)});r.status===200?ok++:r.status===429?shed++:err++}catch{err++}}));tot+=N;floodStats={N:tot,ok,shed,err,running:true};await new Promise(r=>setTimeout(r,1500))}
  flooding=false;floodStats={N:tot,ok,shed,err,running:false}}
 const app=express();app.use(express.json());
 app.use((req,res,next)=>{res.set({'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET,POST,OPTIONS'});req.method==='OPTIONS'?res.end():next()}); // lets the student page send demo chaos
 app.get('/',(req,res)=>res.sendFile(path.join(__dirname,'public/dashboard.html')));
 app.use('/fonts',express.static(path.join(__dirname,'public/fonts'),{maxAge:'7d'}));
+app.get('/theme.js',(req,res)=>res.sendFile(path.join(__dirname,'public/theme.js')));
 app.get('/theme.css',(req,res)=>res.sendFile(path.join(__dirname,'public/theme.css')));
 app.get('/api/status',(req,res)=>res.json({healing:healing(),recoveries,restarts,floodStats,app:last,
  proc:!child?'down':last?'up':(Date.now()-startedAt<4000?'starting':'unresponsive'),incidents}));

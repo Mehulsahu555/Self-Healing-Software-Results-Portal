@@ -33,14 +33,14 @@ Signed-in access only: a password page comes first, then a signed, HTTP-only ses
 `node chaos.js dbslow | dbdown | corrupt [roll] | corrupt-both [roll] | flood | freeze | crash | healing-on | healing-off | reseed | all`
 The console buttons do the same. Turn self-healing off for the baseline.
 
-## Download and print chaos (student page)
-Open the student page and expand "Demo controls": slow database, database down, break PDF download, break printing, reset, and a self-healing switch. With healing ON, a broken PDF download waits while the PDF renderer is restarted (about 3 s) and the page says so; printing is repaired the same way (about 3 s). With healing OFF both stay broken and the page says self-healing is off. The result page also reports what self-healing did (retry, cache, or repair) and how long it took. The health console has Downloads and Printing tiles, and the same two buttons.
+## Download and print chaos
+Use the health console buttons "Break PDF download" and "Break printing". With healing ON, a broken PDF download on the student page waits while the PDF renderer is restarted (about 3 s) and the page says so; printing is repaired the same way. With healing OFF both stay broken and the page says self-healing is off. The result page also reports what self-healing did (retry, cache, or repair) and how long it took. The console has Downloads and Printing tiles.
 
 ## Failures stay until healed
 With self-healing OFF every failure persists: the DB stays slow or down, a frozen app stays frozen, a crash stays down, corrupt marks stay corrupt. Turn self-healing ON and the system heals them: the circuit breaker plus a failover (simulated: the injected DB fault is cleared as if the pool reconnected to a replica) takes about 6 to 8 s, the watchdog restarts a frozen or crashed app in about 2 to 4 s, and the scanner repairs corrupt records in about 3 s. Between takes with healing off, use "Reset DB faults (manual)".
 
 ## Seeing it from the student's side
-The console card "What a student sees" looks up one roll every second. Corrupt record with healing off shows 999 marks, healing on repairs it from backup within about 3 s. Corrupt record and backup shows "on hold" and needs a person (re-upload in the admin panel). The traffic flood has no console button; run `node chaos.js flood` in a terminal (waves of 1,500 requests, stopped after 8 s). With healing on, requests are shed and the portal retries for the student.
+The console card "What a student sees" looks up one roll every second. Corrupt record with healing off shows 999 marks, healing on repairs it from backup within about 3 s. Corrupt record and backup shows "on hold" and needs a person (re-upload in the admin panel). The "10× traffic flood" button on the health console sends waves of 1,500 requests for up to 15 s; "Stop traffic flood" ends it early. The student page then shows a waiting-room loading screen while the surge lasts, and with healing on the extra requests are shed and the page continues by itself. If the student goes offline the page shows an offline error screen and reloads the result when the connection returns; if the server is unreachable it shows a reconnecting screen. To test offline, use browser DevTools, Network, Offline, or turn off Wi-Fi. `node chaos.js flood` still works from a terminal.
 
 ## Known limits
 - Record and backup both corrupted: quarantined and put on hold, not auto-repaired.
@@ -54,3 +54,6 @@ List every AI tool you used and what you changed or checked yourself, and make s
 
 ## Fonts
 Space Grotesk (headings and big numbers), Inter (text) and JetBrains Mono (roll numbers), bundled in `public/fonts` so they work offline. All three are open source under the SIL Open Font License. Sizes come from one scale in `public/theme.css` (`--fs-xs` to `--fs-display`).
+
+## Theme and screens
+Every page has a Light mode / Dark mode button in the top bar (remembered per browser). Layouts adapt to tablets and phones: the marksheet, admin tables (they scroll sideways) and console tiles reflow, and buttons are larger on touch screens.
