@@ -52,14 +52,10 @@ The console card "What a student sees" looks up one roll every second. Corrupt r
 - The admin password is a demo default.
 
 ## AI Use Declaration
-List every AI tool you used and what you changed or checked yourself, and make sure you can explain every file.
+ChatGPT and Cloud AI
 
-<<<<<<< HEAD
 ## Fonts
 Space Grotesk (headings and big numbers), Inter (text) and JetBrains Mono (roll numbers), bundled in `public/fonts` so they work offline. All three are open source under the SIL Open Font License. Sizes come from one scale in `public/theme.css` (`--fs-xs` to `--fs-display`).
 
 ## Theme and screens
 Every page has a Light mode / Dark mode button in the top bar (remembered per browser). Layouts adapt to tablets and phones: the marksheet, admin tables (they scroll sideways) and console tiles reflow, and buttons are larger on touch screens.
-=======
-
->>>>>>> 88fab042dc2eb3c603a8d36d3c2f14535571d989
