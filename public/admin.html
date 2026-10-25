@@ -1,55 +1,205 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Admin panel</title>
+<!doctype html>
+<html lang=en>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Admin panel</title>
 <link rel=stylesheet href=/theme.css>
 <style>
-.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));border:1px solid var(--rule);border-radius:6px;background:var(--panel);margin-bottom:16px}
-.strip div{padding:14px 18px;border-left:1px solid var(--rule)}.strip div:first-child{border-left:0}.strip b{display:block;font-size:var(--fs-xl);font-weight:700;letter-spacing:-.02em}.strip span{color:var(--mu);font-size:var(--fs-xs)}
-.dr{display:grid;grid-template-columns:22px 1fr 34px;align-items:center;gap:8px;margin:6px 0}.dr i{display:block;height:12px;background:var(--navy);border-radius:2px;min-width:2px}.dr em{font-style:normal;text-align:right;color:var(--mu)}
-.row{display:flex;gap:8px;flex-wrap:wrap}.row input{flex:1;min-width:90px}.sm5 input{min-width:0;flex:1 1 90px}textarea{width:100%;height:110px;font:var(--fs-xs) var(--mono);margin:8px 0}
-ul.log{list-style:none;margin:0;padding:0;max-height:250px;overflow:auto}ul.log li{padding:7px 0;border-bottom:1px solid var(--rule);font-size:var(--fs-xs)}ul.log time{color:var(--mu);display:block;font-size:var(--fs-xs)}
-.pub{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}td.n{font-variant-numeric:tabular-nums}
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--panel);
+    margin-bottom: 16px
+  }
+
+  .strip div {
+    padding: 14px 18px;
+    border-left: 1px solid var(--rule)
+  }
+
+  .strip div:first-child {
+    border-left: 0
+  }
+
+  .strip b {
+    display: block;
+    font-size: var(--fs-xl);
+    font-weight: 700;
+    letter-spacing: -.02em
+  }
+
+  .strip span {
+    color: var(--mu);
+    font-size: var(--fs-xs)
+  }
+
+  .dr {
+    display: grid;
+    grid-template-columns: 22px 1fr 34px;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0
+  }
+
+  .dr i {
+    display: block;
+    height: 12px;
+    background: var(--navy);
+    border-radius: 2px;
+    min-width: 2px
+  }
+
+  .dr em {
+    font-style: normal;
+    text-align: right;
+    color: var(--mu)
+  }
+
+  .row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap
+  }
+
+  .row input {
+    flex: 1;
+    min-width: 90px
+  }
+
+  .sm5 input {
+    min-width: 0;
+    flex: 1 1 90px
+  }
+
+  textarea {
+    width: 100%;
+    height: 110px;
+    font: var(--fs-xs) var(--mono);
+    margin: 8px 0
+  }
+
+  ul.log {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 250px;
+    overflow: auto
+  }
+
+  ul.log li {
+    padding: 7px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: var(--fs-xs)
+  }
+
+  ul.log time {
+    color: var(--mu);
+    display: block;
+    font-size: var(--fs-xs)
+  }
+
+  .pub {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap
+  }
+
+  td.n {
+    font-variant-numeric: tabular-nums
+  }
 </style>
-<header class=bar><span class=brand><span>Admin</span> panel</span><a data-p=5100 data-u=/>Student portal</a><a data-p=5200 data-u=/>Health dashboard</a><button class="btn ghost sm" id=lo>Sign out</button></header>
+<header class=bar><span class=brand><span>Admin</span> panel</span><a data-p=5100 data-u= />Student portal</a><a
+    data-p=5200 data-u= />Health dashboard</a><button class="btn ghost sm" id=lo>Sign out</button></header>
 <main class=wrap>
-<div class="panel pub"><div><h2 style="margin:0">Result visibility</h2><span class=mu id=swt>Loading…</span></div><label class=sw><input type=checkbox id=sw aria-label="Publish results"><span>Published</span></label></div>
-<div class=strip id=st></div>
-<div class=two>
-<div class=panel><h2>Upload results</h2><p class=mu style="margin:0 0 8px">Excel (.xlsx), CSV or pasted text. Columns: roll, name, then the five subject marks (see sample). Invalid rows are rejected with a reason.</p>
-<input type=file id=f accept=".xlsx,.csv,.txt"><textarea id=t placeholder="1001,Aarav A.,82,75,90,68,77"></textarea>
-<div class=row><button class=btn id=imp>Import rows</button><button class="btn ghost" id=smp>Download sample CSV</button></div><div id=rs style="margin-top:10px"></div></div>
-<div class=panel><h2>Add or edit a student</h2><div class=row><input id=r placeholder="Roll (4 digits)"><input id=n placeholder="Name"></div>
-<div class="row sm5" style="margin-top:8px" id=sj></div>
-<div class=row style="margin-top:10px"><button class=btn id=one>Save student</button></div><div id=os style="margin-top:10px"></div>
-<h2 style="margin-top:22px">Grade distribution</h2><div id=dist></div></div></div>
-<div class=panel><div class=row style="justify-content:space-between;align-items:center;margin-bottom:10px"><h2 style="margin:0">Students <span class=mu id=cnt></span></h2><span class=row><input id=q placeholder="Search roll or name" style="min-width:200px"><button class="btn ghost" id=ex>Export CSV</button></span></div>
-<div style="max-height:380px;overflow:auto"><table id=tb></table></div></div>
-<div class=two><div class=panel><h2>Activity log</h2><ul class=log id=au></ul></div><div class=panel><h2>Quarantine</h2><p class=mu style="margin:0 0 8px">Bad records the system set aside while repairing from backup.</p><ul class=log id=qu></ul></div></div>
-<p class=mu>Database: SQLite (data/portal.db) with a separate backup (data/portal-backup.db).</p>
+  <div class="panel pub">
+    <div>
+      <h2 style="margin:0">Result visibility</h2><span class=mu id=swt>Loading…</span>
+    </div><label class=sw><input type=checkbox id=sw aria-label="Publish results"><span>Published</span></label>
+  </div>
+  <div class=strip id=st></div>
+  <div class=two>
+    <div class=panel>
+      <h2>Upload results</h2>
+      <p class=mu style="margin:0 0 8px">Excel (.xlsx), CSV or pasted text. Columns: roll, name, then the five subject
+        marks (see sample). Invalid rows are rejected with a reason.</p>
+      <input type=file id=f accept=".xlsx,.csv,.txt"><textarea id=t
+        placeholder="1001,Aarav A.,82,75,90,68,77"></textarea>
+      <div class=row><button class=btn id=imp>Import rows</button><button class="btn ghost" id=smp>Download sample
+          CSV</button></div>
+      <div id=rs style="margin-top:10px"></div>
+    </div>
+    <div class=panel>
+      <h2>Add or edit a student</h2>
+      <div class=row><input id=r placeholder="Roll (4 digits)"><input id=n placeholder="Name"></div>
+      <div class="row sm5" style="margin-top:8px" id=sj></div>
+      <div class=row style="margin-top:10px"><button class=btn id=one>Save student</button></div>
+      <div id=os style="margin-top:10px"></div>
+      <h2 style="margin-top:22px">Grade distribution</h2>
+      <div id=dist></div>
+    </div>
+  </div>
+  <div class=panel>
+    <div class=row style="justify-content:space-between;align-items:center;margin-bottom:10px">
+      <h2 style="margin:0">Students <span class=mu id=cnt></span></h2><span class=row><input id=q
+          placeholder="Search roll or name" style="min-width:200px"><button class="btn ghost" id=ex>Export
+          CSV</button></span>
+    </div>
+    <div style="max-height:380px;overflow:auto">
+      <table id=tb></table>
+    </div>
+  </div>
+  <div class=two>
+    <div class=panel>
+      <h2>Activity log</h2>
+      <ul class=log id=au></ul>
+    </div>
+    <div class=panel>
+      <h2>Quarantine</h2>
+      <p class=mu style="margin:0 0 8px">Bad records the system set aside while repairing from backup.</p>
+      <ul class=log id=qu></ul>
+    </div>
+  </div>
+  <p class=mu>Database: SQLite (data/portal.db) with a separate backup (data/portal-backup.db).</p>
 </main>
 <script>
-document.querySelectorAll('[data-p]').forEach(a=>a.href='http://'+location.hostname+':'+a.dataset.p+a.dataset.u);
-const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>]/g,c=>'&#'+c.charCodeAt(0)+';');let all=[],SUB=[];
-const api=(m,p,b)=>fetch('/admin/api/'+p,{method:m,headers:{'content-type':'application/json'},body:b&&JSON.stringify(b)}).then(async r=>{const d=await r.json();if(r.status===401)location.href='/admin';if(!r.ok)throw new Error(d.error);return d});
-async function refresh(){try{const[l,s]=await Promise.all([api('GET','students'),api('GET','stats')]);all=l;SUB=s.subjects;if(!$('sj').children.length)$('sj').innerHTML=SUB.map((n,i)=>`<input id=s${i} placeholder="${n}" title="${n}">`).join('');draw();dash(s)}catch(e){$('swt').innerHTML='<span class=er>'+esc(e.message)+'</span>'}}
-function dash(s){const t=s.stats;$('sw').checked=s.published;$('swt').textContent=s.published?'Students can see their results.':'Results are hidden. Students see a “not published yet” message.';
- $('st').innerHTML=[['Students',t.total],['Average percentage',t.avg+'%'],['Pass rate',t.pass+'%'],['Highest percentage',t.max+'%'],['Need attention',t.bad+t.held]].map(([a,b])=>`<div><b>${b}</b><span>${a}</span></div>`).join('');
- const mx=Math.max(1,...Object.values(t.dist));$('dist').innerHTML=Object.entries(t.dist).map(([g,n])=>`<div class=dr><span>${g}</span><i style="width:${n/mx*100}%"></i><em>${n}</em></div>`).join('');
- $('au').innerHTML=s.audit.map(a=>`<li><time>${new Date(a.at).toLocaleString()}</time><b>${esc(a.action)}</b> ${esc(a.detail)}</li>`).join('')||'<li class=mu>No activity yet.</li>';
- $('qu').innerHTML=s.quarantine.map(a=>`<li><time>${new Date(a.at).toLocaleString()}</time>Roll ${esc(a.roll)} (${esc(a.name)}) had invalid marks: ${esc(a.marks)}</li>`).join('')||'<li class=mu>Nothing quarantined.</li>'}
-function draw(){const s=$('q').value.toLowerCase(),l=all.filter(x=>x.roll.includes(s)||x.name.toLowerCase().includes(s));$('cnt').textContent='('+all.length+')';
- $('tb').innerHTML='<tr><th>Roll</th><th>Name</th>'+SUB.map(n=>`<th title="${n}">${n.split(' ').map(w=>w[0]).join('')}</th>`).join('')+'<th>%</th><th>Grade</th><th></th></tr>'+
-  l.slice(0,100).map(x=>`<tr><td class=mono>${x.roll}</td><td>${esc(x.name)}</td>${x.marks.map(m=>`<td class="n ${m<40||m>100?'er':''}">${m}</td>`).join('')}<td class=n>${x.percent}</td><td>${x.grade}${x.held?' <span class="tag er">on hold</span>':''}</td><td><button class="btn ghost sm" onclick="edit('${x.roll}')">Edit</button> <button class="btn bad sm" onclick="del('${x.roll}')">Delete</button></td></tr>`).join('')}
-function edit(r){const x=all.find(y=>y.roll===r);$('r').value=x.roll;$('n').value=x.name;x.marks.forEach((m,i)=>$('s'+i).value=m);$('r').scrollIntoView({behavior:'smooth',block:'center'});$('s0').focus()}
-async function send(rows,out){try{const d=await api('POST','students',{rows});
- out.innerHTML=`<div class=ok>${d.added} added, ${d.updated} updated.</div>`+(d.rejected.length?`<div class=er>${d.rejected.length} rejected:</div><ul>${d.rejected.slice(0,10).map(x=>`<li>Line ${x.line}: ${esc(x.reason)}</li>`).join('')}</ul>`:'');refresh()}catch(e){out.innerHTML='<div class=er>'+esc(e.message)+'</div>'}}
-$('f').onchange=e=>{const f=e.target.files[0],r=new FileReader();
- if(/\.xlsx$/i.test(f.name)){r.onload=async()=>{try{$('t').value=(await api('POST','parse-xlsx',{data:r.result.split(',')[1]})).csv;$('rs').innerHTML='<div class=mu>Excel loaded. Check the rows, then click Import rows.</div>'}catch(x){$('rs').innerHTML='<div class=er>'+esc(x.message)+'</div>'}};r.readAsDataURL(f)}
- else{r.onload=()=>$('t').value=r.result;r.readAsText(f)}};
-$('imp').onclick=()=>{const rows=$('t').value.split(/\r?\n/).map((l,i)=>({l,line:i+1})).filter(x=>x.l.trim()).map(x=>{const p=x.l.split(',').map(s=>s.trim());return{line:x.line,roll:p[0],name:p[1],marks:p.slice(2,7)}}).filter((x,i)=>!(i===0&&isNaN(x.marks[0])));send(rows,$('rs'))};
-$('one').onclick=()=>send([{line:1,roll:$('r').value,name:$('n').value,marks:SUB.map((_,i)=>$('s'+i).value)}],$('os'));
-$('smp').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['roll,name,'+SUB.join(',')+'\n1001,Aarav A.,82,75,90,68,77\n1002,Diya B.,91,88,79,84,95\n'],{type:'text/csv'}));a.download='sample-results.csv';a.click()};
-$('ex').onclick=async()=>{const r=await fetch('/admin/api/export');if(!r.ok)return;const a=document.createElement('a');a.href=URL.createObjectURL(await r.blob());a.download='results.csv';a.click()};
-$('sw').onchange=async()=>{try{await api('POST','publish',{published:$('sw').checked})}catch{}refresh()};
-$('lo').onclick=async()=>{await fetch('/admin/logout',{method:'POST'});location.href='/admin'};
-async function del(r){if(confirm('Delete roll '+r+'? This also removes its backup copy.')){await api('DELETE','students/'+r);refresh()}}
-$('q').oninput=draw;refresh();setInterval(refresh,5000);
+  document.querySelectorAll('[data-p]').forEach(a => a.href = 'http://' + location.hostname + ':' + a.dataset.p + a.dataset.u);
+  const $ = id => document.getElementById(id), esc = s => String(s).replace(/[&<>]/g, c => '&#' + c.charCodeAt(0) + ';'); let all = [], SUB = [];
+  const api = (m, p, b) => fetch('/admin/api/' + p, { method: m, headers: { 'content-type': 'application/json' }, body: b && JSON.stringify(b) }).then(async r => { const d = await r.json(); if (r.status === 401) location.href = '/admin'; if (!r.ok) throw new Error(d.error); return d });
+  async function refresh() { try { const [l, s] = await Promise.all([api('GET', 'students'), api('GET', 'stats')]); all = l; SUB = s.subjects; if (!$('sj').children.length) $('sj').innerHTML = SUB.map((n, i) => `<input id=s${i} placeholder="${n}" title="${n}">`).join(''); draw(); dash(s) } catch (e) { $('swt').innerHTML = '<span class=er>' + esc(e.message) + '</span>' } }
+  function dash(s) {
+    const t = s.stats; $('sw').checked = s.published; $('swt').textContent = s.published ? 'Students can see their results.' : 'Results are hidden. Students see a “not published yet” message.';
+    $('st').innerHTML = [['Students', t.total], ['Average percentage', t.avg + '%'], ['Pass rate', t.pass + '%'], ['Highest percentage', t.max + '%'], ['Need attention', t.bad + t.held]].map(([a, b]) => `<div><b>${b}</b><span>${a}</span></div>`).join('');
+    const mx = Math.max(1, ...Object.values(t.dist)); $('dist').innerHTML = Object.entries(t.dist).map(([g, n]) => `<div class=dr><span>${g}</span><i style="width:${n / mx * 100}%"></i><em>${n}</em></div>`).join('');
+    $('au').innerHTML = s.audit.map(a => `<li><time>${new Date(a.at).toLocaleString()}</time><b>${esc(a.action)}</b> ${esc(a.detail)}</li>`).join('') || '<li class=mu>No activity yet.</li>';
+    $('qu').innerHTML = s.quarantine.map(a => `<li><time>${new Date(a.at).toLocaleString()}</time>Roll ${esc(a.roll)} (${esc(a.name)}) had invalid marks: ${esc(a.marks)}</li>`).join('') || '<li class=mu>Nothing quarantined.</li>'
+  }
+  function draw() {
+    const s = $('q').value.toLowerCase(), l = all.filter(x => x.roll.includes(s) || x.name.toLowerCase().includes(s)); $('cnt').textContent = '(' + all.length + ')';
+    $('tb').innerHTML = '<tr><th>Roll</th><th>Name</th>' + SUB.map(n => `<th title="${n}">${n.split(' ').map(w => w[0]).join('')}</th>`).join('') + '<th>%</th><th>Grade</th><th></th></tr>' +
+      l.slice(0, 100).map(x => `<tr><td class=mono>${x.roll}</td><td>${esc(x.name)}</td>${x.marks.map(m => `<td class="n ${m < 40 || m > 100 ? 'er' : ''}">${m}</td>`).join('')}<td class=n>${x.percent}</td><td>${x.grade}${x.held ? ' <span class="tag er">on hold</span>' : ''}</td><td><button class="btn ghost sm" onclick="edit('${x.roll}')">Edit</button> <button class="btn bad sm" onclick="del('${x.roll}')">Delete</button></td></tr>`).join('')
+  }
+  function edit(r) { const x = all.find(y => y.roll === r); $('r').value = x.roll; $('n').value = x.name; x.marks.forEach((m, i) => $('s' + i).value = m); $('r').scrollIntoView({ behavior: 'smooth', block: 'center' }); $('s0').focus() }
+  async function send(rows, out) {
+    try {
+      const d = await api('POST', 'students', { rows });
+      out.innerHTML = `<div class=ok>${d.added} added, ${d.updated} updated.</div>` + (d.rejected.length ? `<div class=er>${d.rejected.length} rejected:</div><ul>${d.rejected.slice(0, 10).map(x => `<li>Line ${x.line}: ${esc(x.reason)}</li>`).join('')}</ul>` : ''); refresh()
+    } catch (e) { out.innerHTML = '<div class=er>' + esc(e.message) + '</div>' }
+  }
+  $('f').onchange = e => {
+    const f = e.target.files[0], r = new FileReader();
+    if (/\.xlsx$/i.test(f.name)) { r.onload = async () => { try { $('t').value = (await api('POST', 'parse-xlsx', { data: r.result.split(',')[1] })).csv; $('rs').innerHTML = '<div class=mu>Excel loaded. Check the rows, then click Import rows.</div>' } catch (x) { $('rs').innerHTML = '<div class=er>' + esc(x.message) + '</div>' } }; r.readAsDataURL(f) }
+    else { r.onload = () => $('t').value = r.result; r.readAsText(f) }
+  };
+  $('imp').onclick = () => { const rows = $('t').value.split(/\r?\n/).map((l, i) => ({ l, line: i + 1 })).filter(x => x.l.trim()).map(x => { const p = x.l.split(',').map(s => s.trim()); return { line: x.line, roll: p[0], name: p[1], marks: p.slice(2, 7) } }).filter((x, i) => !(i === 0 && isNaN(x.marks[0]))); send(rows, $('rs')) };
+  $('one').onclick = () => send([{ line: 1, roll: $('r').value, name: $('n').value, marks: SUB.map((_, i) => $('s' + i).value) }], $('os'));
+  $('smp').onclick = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['roll,name,' + SUB.join(',') + '\n1001,Aarav A.,82,75,90,68,77\n1002,Diya B.,91,88,79,84,95\n'], { type: 'text/csv' })); a.download = 'sample-results.csv'; a.click() };
+  $('ex').onclick = async () => { const r = await fetch('/admin/api/export'); if (!r.ok) return; const a = document.createElement('a'); a.href = URL.createObjectURL(await r.blob()); a.download = 'results.csv'; a.click() };
+  $('sw').onchange = async () => { try { await api('POST', 'publish', { published: $('sw').checked }) } catch { } refresh() };
+  $('lo').onclick = async () => { await fetch('/admin/logout', { method: 'POST' }); location.href = '/admin' };
+  async function del(r) { if (confirm('Delete roll ' + r + '? This also removes its backup copy.')) { await api('DELETE', 'students/' + r); refresh() } }
+  $('q').oninput = draw; refresh(); setInterval(refresh, 5000);
 </script>
