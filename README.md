@@ -37,10 +37,10 @@ The console buttons do the same. Turn self-healing off for the baseline.
 Open the student page and expand "Demo controls": slow database, database down, break PDF download, break printing, reset, and a self-healing switch. With healing ON, a broken PDF download waits while the PDF renderer is restarted (about 3 s) and the page says so; printing is repaired the same way (about 3 s). With healing OFF both stay broken and the page says self-healing is off. The result page also reports what self-healing did (retry, cache, or repair) and how long it took. The health console has Downloads and Printing tiles, and the same two buttons.
 
 ## Failures stay until healed
-With self-healing OFF every failure persists: the DB stays slow or down, a frozen app stays frozen, a crash stays down, corrupt marks stay corrupt, and the flood keeps sending waves (up to 30 s). Turn self-healing ON and the system heals them: the circuit breaker plus a failover (simulated: the injected DB fault is cleared as if the pool reconnected to a replica) takes about 6 to 8 s, the watchdog restarts a frozen or crashed app in about 2 to 4 s, and the scanner repairs corrupt records in about 3 s. Between takes with healing off, use "Stop traffic flood" and "Reset DB faults (manual)".
+With self-healing OFF every failure persists: the DB stays slow or down, a frozen app stays frozen, a crash stays down, corrupt marks stay corrupt. Turn self-healing ON and the system heals them: the circuit breaker plus a failover (simulated: the injected DB fault is cleared as if the pool reconnected to a replica) takes about 6 to 8 s, the watchdog restarts a frozen or crashed app in about 2 to 4 s, and the scanner repairs corrupt records in about 3 s. Between takes with healing off, use "Reset DB faults (manual)".
 
 ## Seeing it from the student's side
-The console card "What a student sees" looks up one roll every second. Corrupt record with healing off shows 999 marks, healing on repairs it from backup within about 3 s. Corrupt record and backup shows "on hold" and needs a person (re-upload in the admin panel). The flood sends 3 waves of 1,500 requests: with healing on, requests are shed and the portal retries for the student.
+The console card "What a student sees" looks up one roll every second. Corrupt record with healing off shows 999 marks, healing on repairs it from backup within about 3 s. Corrupt record and backup shows "on hold" and needs a person (re-upload in the admin panel). The traffic flood has no console button; run `node chaos.js flood` in a terminal (waves of 1,500 requests, stopped after 8 s). With healing on, requests are shed and the portal retries for the student.
 
 ## Known limits
 - Record and backup both corrupted: quarantined and put on hold, not auto-repaired.
@@ -50,4 +50,7 @@ The console card "What a student sees" looks up one roll every second. Corrupt r
 - The admin password is a demo default.
 
 ## AI Use Declaration
-ChatCPT and Cloud AI
+List every AI tool you used and what you changed or checked yourself, and make sure you can explain every file.
+
+## Fonts
+Space Grotesk (headings and big numbers), Inter (text) and JetBrains Mono (roll numbers), bundled in `public/fonts` so they work offline. All three are open source under the SIL Open Font License. Sizes come from one scale in `public/theme.css` (`--fs-xs` to `--fs-display`).
