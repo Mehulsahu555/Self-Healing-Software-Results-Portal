@@ -1,81 +1,459 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Semester results</title>
-<script src=/theme.js></script><link rel=stylesheet href=/theme.css>
+<!doctype html>
+<html lang=en>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Semester results</title>
+<script src=/theme.js></script>
+<link rel=stylesheet href=/theme.css>
 <style>
-.stage{display:grid;grid-template-columns:minmax(280px,400px) 1fr;gap:64px;max-width:1060px;margin:0 auto;padding:64px 24px 48px;align-items:start}
-@media(max-width:860px){.stage{grid-template-columns:1fr;gap:36px;padding:36px 20px}}
-h1{font-size:var(--fs-hero);line-height:1;font-weight:700;letter-spacing:-.035em;margin:0 0 16px}.lead{color:var(--mu);margin:0 0 28px;max-width:36ch}
-label{display:block;font-weight:600;margin-bottom:6px}#r{width:100%;font:600 var(--fs-lg) var(--mono);letter-spacing:.2em;padding:12px 14px;background:var(--panel)}.go{width:100%;margin-top:12px;padding:13px;font-size:var(--fs-base)}
-.sheet{position:relative;background:var(--panel);border:1px solid var(--rule);border-radius:3px;min-height:420px;padding:32px 34px 32px 84px;background-image:repeating-linear-gradient(transparent 0 35px,var(--rule) 35px 36px);background-position:0 18px;box-shadow:6px 6px 0 var(--rule)}
-.sheet:before{content:"";position:absolute;left:58px;top:0;bottom:0;border-left:2px solid color-mix(in srgb,var(--pen) 45%,transparent)}
-.empty{color:var(--mu);margin-top:120px}.nm{font-size:var(--fs-xl);font-weight:700;letter-spacing:-.02em}.rl{color:var(--mu);font-family:var(--mono)}
-.pc{margin:22px 0 14px;font-size:var(--fs-display);font-weight:700;line-height:1;letter-spacing:-.04em}.pc span{background:linear-gradient(transparent 62%,var(--mark) 62%);padding:0 6px 0 2px}
-.sub{display:flex;justify-content:space-between;gap:12px;height:36px;line-height:36px}.sub .mono{font-variant-numeric:tabular-nums}.tot{font-weight:700}
-.stamp{position:absolute;right:30px;top:28px;width:92px;height:92px;border:3px solid var(--pen);border-radius:50%;color:var(--pen);display:grid;place-content:center;text-align:center;transform:rotate(-9deg)}.stamp b{font-size:var(--fs-2xl);line-height:1}.stamp small{font-size:var(--fs-xs)}
-.acts{display:flex;gap:10px;align-items:center;margin-top:18px;flex-wrap:wrap}
-.note{margin-top:14px;padding:10px 12px;border-left:4px solid var(--wn);background:var(--paper);font-size:var(--fs-sm)}
-.veil{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(6px);padding:20px}.veil[hidden]{display:none}
-.vcard{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:34px 38px;max-width:460px;text-align:center;box-shadow:8px 8px 0 var(--rule)}.vcard h2{font-size:var(--fs-lg);margin:18px 0 8px}.vcard p{color:var(--mu);margin:0 0 8px}
-.vn{font-size:var(--fs-sm);margin-top:14px!important;padding:8px 10px;border-left:4px solid var(--wn);background:var(--paper);text-align:left}.ico{width:56px;height:56px;display:block;margin:0 auto}
-.spin{width:44px;height:44px;border:4px solid var(--rule);border-top-color:var(--navy);border-radius:50%;margin:0 auto;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
-.bars{display:flex;flex-direction:column;gap:8px;margin:18px auto 10px;width:220px}.bars i{display:block;height:8px;border-radius:2px;background:linear-gradient(90deg,var(--rule) 0 40%,var(--mark) 50%,var(--rule) 60% 100%) 0 0/300% 100%;animation:sh 1.4s linear infinite}.bars i:nth-child(2){width:80%;animation-delay:.2s}.bars i:nth-child(3){width:60%;animation-delay:.4s}@keyframes sh{to{background-position:-300% 0}}
-@media(prefers-reduced-motion:reduce){.spin,.bars i{animation:none}}
-.foot{max-width:1060px;margin:0 auto;padding:0 24px 40px;color:var(--mu);font-size:var(--fs-xs)}.foot a{color:var(--mu)}
-@media print{.bar,.foot,section:first-child,.acts{display:none}.stage{display:block;padding:0}.sheet{box-shadow:none}}
-@media(max-width:600px){.stage{padding:22px 14px 28px;gap:24px}.sheet{padding:22px 14px 22px 48px;min-height:320px;box-shadow:4px 4px 0 var(--rule)}.sheet:before{left:34px}.empty{margin-top:60px}.stamp{width:70px;height:70px;right:12px;top:14px}.stamp b{font-size:var(--fs-xl)}.nm{font-size:var(--fs-lg);max-width:calc(100% - 82px)}.sub{font-size:var(--fs-sm)}.acts .btn{flex:1}.vcard{padding:24px 18px}.foot{padding:0 14px 28px}}
-@media(max-width:860px) and (min-width:601px){.sheet{padding-left:76px}.sheet:before{left:52px}}
+  .stage {
+    display: grid;
+    grid-template-columns: minmax(280px, 400px) 1fr;
+    gap: 64px;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 64px 24px 48px;
+    align-items: start
+  }
+
+  @media(max-width:860px) {
+    .stage {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      padding: 36px 20px
+    }
+  }
+
+  h1 {
+    font-size: var(--fs-hero);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -.035em;
+    margin: 0 0 16px
+  }
+
+  .lead {
+    color: var(--mu);
+    margin: 0 0 28px;
+    max-width: 36ch
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px
+  }
+
+  #r {
+    width: 100%;
+    font: 600 var(--fs-lg) var(--mono);
+    letter-spacing: .2em;
+    padding: 12px 14px;
+    background: var(--panel)
+  }
+
+  .go {
+    width: 100%;
+    margin-top: 12px;
+    padding: 13px;
+    font-size: var(--fs-base)
+  }
+
+  .sheet {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    min-height: 420px;
+    padding: 32px 34px 32px 84px;
+    background-image: repeating-linear-gradient(transparent 0 35px, var(--rule) 35px 36px);
+    background-position: 0 18px;
+    box-shadow: 6px 6px 0 var(--rule)
+  }
+
+  .sheet:before {
+    content: "";
+    position: absolute;
+    left: 58px;
+    top: 0;
+    bottom: 0;
+    border-left: 2px solid color-mix(in srgb, var(--pen) 45%, transparent)
+  }
+
+  .empty {
+    color: var(--mu);
+    margin-top: 120px
+  }
+
+  .nm {
+    font-size: var(--fs-xl);
+    font-weight: 700;
+    letter-spacing: -.02em
+  }
+
+  .rl {
+    color: var(--mu);
+    font-family: var(--mono)
+  }
+
+  .pc {
+    margin: 22px 0 14px;
+    font-size: var(--fs-display);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -.04em
+  }
+
+  .pc span {
+    background: linear-gradient(transparent 62%, var(--mark) 62%);
+    padding: 0 6px 0 2px
+  }
+
+  .sub {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    height: 36px;
+    line-height: 36px
+  }
+
+  .sub .mono {
+    font-variant-numeric: tabular-nums
+  }
+
+  .tot {
+    font-weight: 700
+  }
+
+  .stamp {
+    position: absolute;
+    right: 30px;
+    top: 28px;
+    width: 92px;
+    height: 92px;
+    border: 3px solid var(--pen);
+    border-radius: 50%;
+    color: var(--pen);
+    display: grid;
+    place-content: center;
+    text-align: center;
+    transform: rotate(-9deg)
+  }
+
+  .stamp b {
+    font-size: var(--fs-2xl);
+    line-height: 1
+  }
+
+  .stamp small {
+    font-size: var(--fs-xs)
+  }
+
+  .acts {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 18px;
+    flex-wrap: wrap
+  }
+
+  .note {
+    margin-top: 14px;
+    padding: 10px 12px;
+    border-left: 4px solid var(--wn);
+    background: var(--paper);
+    font-size: var(--fs-sm)
+  }
+
+  .veil {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--paper) 90%, transparent);
+    backdrop-filter: blur(6px);
+    padding: 20px
+  }
+
+  .veil[hidden] {
+    display: none
+  }
+
+  .vcard {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 34px 38px;
+    max-width: 460px;
+    text-align: center;
+    box-shadow: 8px 8px 0 var(--rule)
+  }
+
+  .vcard h2 {
+    font-size: var(--fs-lg);
+    margin: 18px 0 8px
+  }
+
+  .vcard p {
+    color: var(--mu);
+    margin: 0 0 8px
+  }
+
+  .vn {
+    font-size: var(--fs-sm);
+    margin-top: 14px !important;
+    padding: 8px 10px;
+    border-left: 4px solid var(--wn);
+    background: var(--paper);
+    text-align: left
+  }
+
+  .ico {
+    width: 56px;
+    height: 56px;
+    display: block;
+    margin: 0 auto
+  }
+
+  .spin {
+    width: 44px;
+    height: 44px;
+    border: 4px solid var(--rule);
+    border-top-color: var(--navy);
+    border-radius: 50%;
+    margin: 0 auto;
+    animation: sp 1s linear infinite
+  }
+
+  @keyframes sp {
+    to {
+      transform: rotate(360deg)
+    }
+  }
+
+  .bars {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 18px auto 10px;
+    width: 220px
+  }
+
+  .bars i {
+    display: block;
+    height: 8px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--rule) 0 40%, var(--mark) 50%, var(--rule) 60% 100%) 0 0/300% 100%;
+    animation: sh 1.4s linear infinite
+  }
+
+  .bars i:nth-child(2) {
+    width: 80%;
+    animation-delay: .2s
+  }
+
+  .bars i:nth-child(3) {
+    width: 60%;
+    animation-delay: .4s
+  }
+
+  @keyframes sh {
+    to {
+      background-position: -300% 0
+    }
+  }
+
+  @media(prefers-reduced-motion:reduce) {
+
+    .spin,
+    .bars i {
+      animation: none
+    }
+  }
+
+  .foot {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 24px 40px;
+    color: var(--mu);
+    font-size: var(--fs-xs)
+  }
+
+  .foot a {
+    color: var(--mu)
+  }
+
+  @media print {
+
+    .bar,
+    .foot,
+    section:first-child,
+    .acts {
+      display: none
+    }
+
+    .stage {
+      display: block;
+      padding: 0
+    }
+
+    .sheet {
+      box-shadow: none
+    }
+  }
+
+  @media(max-width:600px) {
+    .stage {
+      padding: 22px 14px 28px;
+      gap: 24px
+    }
+
+    .sheet {
+      padding: 22px 14px 22px 48px;
+      min-height: 320px;
+      box-shadow: 4px 4px 0 var(--rule)
+    }
+
+    .sheet:before {
+      left: 34px
+    }
+
+    .empty {
+      margin-top: 60px
+    }
+
+    .stamp {
+      width: 70px;
+      height: 70px;
+      right: 12px;
+      top: 14px
+    }
+
+    .stamp b {
+      font-size: var(--fs-xl)
+    }
+
+    .nm {
+      font-size: var(--fs-lg);
+      max-width: calc(100% - 82px)
+    }
+
+    .sub {
+      font-size: var(--fs-sm)
+    }
+
+    .acts .btn {
+      flex: 1
+    }
+
+    .vcard {
+      padding: 24px 18px
+    }
+
+    .foot {
+      padding: 0 14px 28px
+    }
+  }
+
+  @media(max-width:860px) and (min-width:601px) {
+    .sheet {
+      padding-left: 76px
+    }
+
+    .sheet:before {
+      left: 52px
+    }
+  }
 </style>
+
 <body class=ruled>
-<header class=bar><span class=brand><span>Results</span> Portal</span><span class=tag id=chip>Self-healing: …</span></header>
-<main class=stage>
-<section><h1>Find your semester result</h1><p class=lead>Enter your four-digit roll number. Your marksheet appears beside it, and you can download it as a PDF.</p>
-<form id=f><label for=r>Roll number</label><input id=r inputmode=numeric maxlength=4 autocomplete=off placeholder="1042"><button class="btn go">Show my marksheet</button></form></section>
-<section class=sheet id=o aria-live=polite><div class=empty>Your marksheet will appear here.</div></section></main>
-<p class=foot>Staff: <a data-p=5100 data-u=/admin>Admin panel</a>, <a data-p=5200 data-u=/>Health dashboard</a></p>
-<div class=veil id=veil hidden role=alertdialog aria-live=assertive><div class=vcard id=vcard></div></div>
-<script>
-document.querySelectorAll('[data-p]').forEach(a=>a.href='http://'+location.hostname+':'+a.dataset.p+a.dataset.u);
-const $=id=>document.getElementById(id),o=$('o'),sleep=ms=>new Promise(r=>setTimeout(r,ms)),esc=s=>String(s).replace(/[&<>]/g,c=>'&#'+c.charCodeAt(0)+';'),note=t=>'<div class=note>'+t+'</div>',sec=ms=>(ms/1000).toFixed(1)+' s';
-let mode={healing:true},fails=0,vs=null,vsince=0,retryRoll=null;
-const OFFICO='<svg class=ico viewBox="0 0 56 56" fill=none stroke="var(--er)" stroke-width=4 stroke-linecap=round><path d="M10 22a26 26 0 0 1 36 0M17 30a16 16 0 0 1 22 0M24 38a6 6 0 0 1 8 0"/><path d="M8 8l40 40"/></svg>';
-const V={surge:()=>`<div class=spin></div><h2>Results are very busy right now</h2><p>You are in the waiting room. This page continues by itself, so please don’t refresh.</p><div class=bars><i></i><i></i><i></i></div><p id=vw>Waiting 0 s</p><p class=vn>${mode.healing?'Self-healing is shedding extra traffic to keep the portal running.':'The server is overloaded and self-healing is off.'}</p>`,
- offline:()=>`${OFFICO}<h2>You are offline</h2><p>We can’t reach the internet. Check your Wi-Fi or mobile data.</p><p>This page reconnects by itself as soon as you are back online.</p><button class=btn id=vb>Try again</button>`,
- down:()=>`<div class=spin></div><h2>Can’t reach the results server</h2><p>It may be restarting.${mode.healing?' Self-healing is bringing it back.':''} This page reconnects automatically.</p>`};
-function render(){const s=!navigator.onLine?'offline':fails>=2?'down':mode.surge?'surge':null;
- if(s!==vs){const prev=vs;vs=s;vsince=Date.now();
-  if(s){$('vcard').innerHTML=V[s]();$('veil').hidden=false;const b=$('vb');if(b)b.onclick=poll}
-  else{$('veil').hidden=true;if(prev&&prev!=='surge'&&retryRoll){const r=retryRoll;retryRoll=null;$('r').value=r;show(r)}}}
- const w=$('vw');if(w)w.textContent='Waiting '+Math.round((Date.now()-vsince)/1000)+' s'}
-async function poll(){try{mode=await(await fetch('/mode',{cache:'no-store'})).json();fails=0;$('chip').textContent='Self-healing: '+(mode.healing?'ON':'OFF');$('chip').className='tag '+(mode.healing?'ok':'er')}catch{fails++}render()}
-addEventListener('offline',render);addEventListener('online',()=>{fails=0;poll()});
-setInterval(poll,1000);poll();
-async function dl(roll){const m=$('dm'),t0=Date.now();m.innerHTML='';const slow=setTimeout(()=>m.innerHTML=note('The download is taking longer than usual.'+(mode.healing?' Self-healing is repairing the PDF service…':'')),1500);
- try{const x=await fetch('/api/result/'+roll+'/pdf');clearTimeout(slow);
-  if(!x.ok){const d=await x.json().catch(()=>({}));m.innerHTML=note(x.status===429?'The portal is busy. Try the download again in a few seconds.':esc(d.error||'Could not create the PDF.')+(mode.healing?'':' Self-healing is off, so this stays broken.'));return}
-  const a=document.createElement('a');a.href=URL.createObjectURL(await x.blob());a.download='Result_'+roll+'.pdf';a.click();
-  m.innerHTML=Date.now()-t0>1500?note('Self-healing repaired the PDF service. Downloaded in '+sec(Date.now()-t0)+'.'):''}
- catch{clearTimeout(slow);m.innerHTML=note('Cannot reach the server. Try again.')}}
-async function doPrint(){const m=$('dm');m.innerHTML='';await poll();
- if(mode.printBroken){if(!mode.healing){m.innerHTML=note('Printing is not working right now. Self-healing is off, so it stays broken.');return}
-  const t0=Date.now();m.innerHTML=note('Printing is not responding. Self-healing is repairing it…');
-  for(let i=0;i<20&&mode.printBroken;i++){await sleep(500);await poll()}
-  if(mode.printBroken){m.innerHTML=note('Printing could not be repaired yet. Try again in a moment.');return}
-  m.innerHTML=note('Self-healing repaired printing in '+sec(Date.now()-t0)+'.')}
- print()}
-const report=(d,ms)=>{const t=' ('+sec(ms)+')';
- if(d.stale)return 'Self-healing: the database is not responding, so this is your last saved result'+t+'.';
- if(d.src==='repaired')return 'Self-healing: a damaged record was repaired from a verified backup'+t+'.';
- if(ms>1500)return mode.healing?'Self-healing: the database was slow, so the request was retried automatically'+t+'.':'The database was slow and self-healing is off'+t+'.';return ''};
-async function show(roll){const t0=Date.now();retryRoll=null;o.innerHTML='<div class=empty>Fetching your marksheet…</div>';
- const wait=setTimeout(()=>o.innerHTML=note('This is taking longer than usual.'+(mode.healing?' Self-healing is working on it…':' Self-healing is off.')),1200);
- try{for(let i=0;i<8;i++){try{const x=await fetch('/api/result/'+roll),d=await x.json();
-  if(x.status===429||x.status===503){o.innerHTML=note('Many students are checking at once. You are in the queue and this page will retry for you.');await sleep((d.retryAfter||2)*1000*(1+i*.3));continue}
-  if(x.status===423)return o.innerHTML=note('Your result is on hold while we verify it. Please contact the exam cell.');
-  if(!x.ok)return o.innerHTML=note(esc(d.error||'Something went wrong. Try again in a moment.')+(mode.healing?'':' Self-healing is off.'));
-  const hr=report(d,Date.now()-t0);
-  return o.innerHTML=`<div class=nm>${esc(d.name)}</div><div class=rl>Roll ${d.roll}</div><div class=stamp><b>${d.grade}</b><small>grade</small></div><div class=pc><span>${d.percent}%</span></div>`+
-   d.subjects.map(s=>`<div class=sub><span>${esc(s.name)}</span><span class="mono ${s.pass?'':'er'}">${s.marks} / 100${s.pass?'':' (fail)'}</span></div>`).join('')+
-   `<div class="sub tot"><span>Total</span><span class=mono>${d.total} / ${d.max}</span></div><div class=acts><span class="tag ${d.pass?'ok':'er'}">${d.pass?'Passed':'Not passed'}</span><button class="btn" onclick="dl('${d.roll}')">Download PDF</button><button class="btn ghost" onclick="doPrint()">Print</button></div><div id=dm></div>`+(hr?note(hr):'')}
-  catch{if(!navigator.onLine){retryRoll=roll;o.innerHTML=note('You are offline. Your result will load as soon as you reconnect.');return}o.innerHTML=note('Cannot reach the server. Retrying…');await sleep(2000)}}
-  retryRoll=roll;o.innerHTML=note('Still very busy. Please try again in a minute.')}finally{clearTimeout(wait)}}
-$('f').onsubmit=e=>{e.preventDefault();show($('r').value.trim())};
-</script>
+  <header class=bar><span class=brand><span>Results</span> Portal</span><span class=tag id=chip>Self-healing: …</span>
+  </header>
+  <main class=stage>
+    <section>
+      <h1>Find your semester result</h1>
+      <p class=lead>Enter your four-digit roll number. Your marksheet appears beside it, and you can download it as a
+        PDF.</p>
+      <form id=f><label for=r>Roll number</label><input id=r inputmode=numeric maxlength=4 autocomplete=off
+          placeholder="1042"><button class="btn go">Show my marksheet</button></form>
+    </section>
+    <section class=sheet id=o aria-live=polite>
+      <div class=empty>Your marksheet will appear here.</div>
+    </section>
+  </main>
+  <p class=foot>Staff: <a data-p=5100 data-u=/admin>Admin panel</a>, <a data-p=5200 data-u= />Health dashboard</a></p>
+  <div class=veil id=veil hidden role=alertdialog aria-live=assertive>
+    <div class=vcard id=vcard></div>
+  </div>
+  <script>
+    document.querySelectorAll('[data-p]').forEach(a => a.href = 'http://' + location.hostname + ':' + a.dataset.p + a.dataset.u);
+    const $ = id => document.getElementById(id), o = $('o'), sleep = ms => new Promise(r => setTimeout(r, ms)), esc = s => String(s).replace(/[&<>]/g, c => '&#' + c.charCodeAt(0) + ';'), note = t => '<div class=note>' + t + '</div>', sec = ms => (ms / 1000).toFixed(1) + ' s';
+    let mode = { healing: true }, fails = 0, vs = null, vsince = 0, retryRoll = null;
+    const OFFICO = '<svg class=ico viewBox="0 0 56 56" fill=none stroke="var(--er)" stroke-width=4 stroke-linecap=round><path d="M10 22a26 26 0 0 1 36 0M17 30a16 16 0 0 1 22 0M24 38a6 6 0 0 1 8 0"/><path d="M8 8l40 40"/></svg>';
+    const V = {
+      surge: () => `<div class=spin></div><h2>Results are very busy right now</h2><p>You are in the waiting room. This page continues by itself, so please don’t refresh.</p><div class=bars><i></i><i></i><i></i></div><p id=vw>Waiting 0 s</p><p class=vn>${mode.healing ? 'Self-healing is shedding extra traffic to keep the portal running.' : 'The server is overloaded and self-healing is off.'}</p>`,
+      offline: () => `${OFFICO}<h2>You are offline</h2><p>We can’t reach the internet. Check your Wi-Fi or mobile data.</p><p>This page reconnects by itself as soon as you are back online.</p><button class=btn id=vb>Try again</button>`,
+      down: () => `<div class=spin></div><h2>Can’t reach the results server</h2><p>It may be restarting.${mode.healing ? ' Self-healing is bringing it back.' : ''} This page reconnects automatically.</p>`
+    };
+    function render() {
+      const s = !navigator.onLine ? 'offline' : fails >= 2 ? 'down' : mode.surge ? 'surge' : null;
+      if (s !== vs) {
+        const prev = vs; vs = s; vsince = Date.now();
+        if (s) { $('vcard').innerHTML = V[s](); $('veil').hidden = false; const b = $('vb'); if (b) b.onclick = poll }
+        else { $('veil').hidden = true; if (prev && prev !== 'surge' && retryRoll) { const r = retryRoll; retryRoll = null; $('r').value = r; show(r) } }
+      }
+      const w = $('vw'); if (w) w.textContent = 'Waiting ' + Math.round((Date.now() - vsince) / 1000) + ' s'
+    }
+    async function poll() { try { mode = await (await fetch('/mode', { cache: 'no-store' })).json(); fails = 0; $('chip').textContent = 'Self-healing: ' + (mode.healing ? 'ON' : 'OFF'); $('chip').className = 'tag ' + (mode.healing ? 'ok' : 'er') } catch { fails++ } render() }
+    addEventListener('offline', render); addEventListener('online', () => { fails = 0; poll() });
+    setInterval(poll, 1000); poll();
+    async function dl(roll) {
+      const m = $('dm'), t0 = Date.now(); m.innerHTML = ''; const slow = setTimeout(() => m.innerHTML = note('The download is taking longer than usual.' + (mode.healing ? ' Self-healing is repairing the PDF service…' : '')), 1500);
+      try {
+        const x = await fetch('/api/result/' + roll + '/pdf'); clearTimeout(slow);
+        if (!x.ok) { const d = await x.json().catch(() => ({})); m.innerHTML = note(x.status === 429 ? 'The portal is busy. Try the download again in a few seconds.' : esc(d.error || 'Could not create the PDF.') + (mode.healing ? '' : ' Self-healing is off, so this stays broken.')); return }
+        const a = document.createElement('a'); a.href = URL.createObjectURL(await x.blob()); a.download = 'Result_' + roll + '.pdf'; a.click();
+        m.innerHTML = Date.now() - t0 > 1500 ? note('Self-healing repaired the PDF service. Downloaded in ' + sec(Date.now() - t0) + '.') : ''
+      }
+      catch { clearTimeout(slow); m.innerHTML = note('Cannot reach the server. Try again.') }
+    }
+    async function doPrint() {
+      const m = $('dm'); m.innerHTML = ''; await poll();
+      if (mode.printBroken) {
+        if (!mode.healing) { m.innerHTML = note('Printing is not working right now. Self-healing is off, so it stays broken.'); return }
+        const t0 = Date.now(); m.innerHTML = note('Printing is not responding. Self-healing is repairing it…');
+        for (let i = 0; i < 20 && mode.printBroken; i++) { await sleep(500); await poll() }
+        if (mode.printBroken) { m.innerHTML = note('Printing could not be repaired yet. Try again in a moment.'); return }
+        m.innerHTML = note('Self-healing repaired printing in ' + sec(Date.now() - t0) + '.')
+      }
+      print()
+    }
+    const report = (d, ms) => {
+      const t = ' (' + sec(ms) + ')';
+      if (d.stale) return 'Self-healing: the database is not responding, so this is your last saved result' + t + '.';
+      if (d.src === 'repaired') return 'Self-healing: a damaged record was repaired from a verified backup' + t + '.';
+      if (ms > 1500) return mode.healing ? 'Self-healing: the database was slow, so the request was retried automatically' + t + '.' : 'The database was slow and self-healing is off' + t + '.'; return ''
+    };
+    async function show(roll) {
+      const t0 = Date.now(); retryRoll = null; o.innerHTML = '<div class=empty>Fetching your marksheet…</div>';
+      const wait = setTimeout(() => o.innerHTML = note('This is taking longer than usual.' + (mode.healing ? ' Self-healing is working on it…' : ' Self-healing is off.')), 1200);
+      try {
+        for (let i = 0; i < 8; i++) {
+          try {
+            const x = await fetch('/api/result/' + roll), d = await x.json();
+            if (x.status === 429 || x.status === 503) { o.innerHTML = note('Many students are checking at once. You are in the queue and this page will retry for you.'); await sleep((d.retryAfter || 2) * 1000 * (1 + i * .3)); continue }
+            if (x.status === 423) return o.innerHTML = note('Your result is on hold while we verify it. Please contact the exam cell.');
+            if (!x.ok) return o.innerHTML = note(esc(d.error || 'Something went wrong. Try again in a moment.') + (mode.healing ? '' : ' Self-healing is off.'));
+            const hr = report(d, Date.now() - t0);
+            return o.innerHTML = `<div class=nm>${esc(d.name)}</div><div class=rl>Roll ${d.roll}</div><div class=stamp><b>${d.grade}</b><small>grade</small></div><div class=pc><span>${d.percent}%</span></div>` +
+              d.subjects.map(s => `<div class=sub><span>${esc(s.name)}</span><span class="mono ${s.pass ? '' : 'er'}">${s.marks} / 100${s.pass ? '' : ' (fail)'}</span></div>`).join('') +
+              `<div class="sub tot"><span>Total</span><span class=mono>${d.total} / ${d.max}</span></div><div class=acts><span class="tag ${d.pass ? 'ok' : 'er'}">${d.pass ? 'Passed' : 'Not passed'}</span><button class="btn" onclick="dl('${d.roll}')">Download PDF</button><button class="btn ghost" onclick="doPrint()">Print</button></div><div id=dm></div>` + (hr ? note(hr) : '')
+          }
+          catch { if (!navigator.onLine) { retryRoll = roll; o.innerHTML = note('You are offline. Your result will load as soon as you reconnect.'); return } o.innerHTML = note('Cannot reach the server. Retrying…'); await sleep(2000) }
+        }
+        retryRoll = roll; o.innerHTML = note('Still very busy. Please try again in a minute.')
+      } finally { clearTimeout(wait) }
+    }
+    $('f').onsubmit = e => { e.preventDefault(); show($('r').value.trim()) };
+  </script>

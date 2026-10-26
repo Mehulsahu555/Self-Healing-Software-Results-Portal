@@ -1,11 +1,58 @@
-<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Admin sign in</title>
-<script src=/theme.js></script><link rel=stylesheet href=/theme.css>
-<style>main{max-width:380px;margin:12vh auto;padding:0 20px}h1{font-size:var(--fs-xl);letter-spacing:-.03em;margin:0 0 6px;font-weight:700}input{width:100%;margin:6px 0 12px;padding:11px 12px}.btn{width:100%;padding:12px}#e{min-height:22px;margin-top:10px}</style>
-<body class=ruled><main><div class=panel><h1>Admin sign in</h1><p class=mu style="margin:0 0 18px">Enter the admin password to manage results.</p>
-<form id=f><label for=p style="font-weight:600">Password</label><input id=p type=password autocomplete=current-password autofocus><button class=btn>Sign in</button><div id=e class=er role=alert></div></form>
-<p class=mu style="margin:14px 0 0;font-size:var(--fs-xs)"><a data-p=5100 data-u=/ class=mu>Back to the student portal</a></p></div></main>
-<script>
-document.querySelectorAll('[data-p]').forEach(a=>a.href='http://'+location.hostname+':'+a.dataset.p+a.dataset.u);
-document.getElementById('f').onsubmit=async e=>{e.preventDefault();const x=await fetch('/admin/login',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({password:document.getElementById('p').value})}),d=await x.json();
- if(x.ok)location.href='/admin';else{document.getElementById('e').textContent=d.error;document.getElementById('p').select()}};
-</script>
+<!doctype html>
+<html lang=en>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Admin sign in</title>
+<script src=/theme.js></script>
+<link rel=stylesheet href=/theme.css>
+<style>
+    main {
+        max-width: 380px;
+        margin: 12vh auto;
+        padding: 0 20px
+    }
+
+    h1 {
+        font-size: var(--fs-xl);
+        letter-spacing: -.03em;
+        margin: 0 0 6px;
+        font-weight: 700
+    }
+
+    input {
+        width: 100%;
+        margin: 6px 0 12px;
+        padding: 11px 12px
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px
+    }
+
+    #e {
+        min-height: 22px;
+        margin-top: 10px
+    }
+</style>
+
+<body class=ruled>
+    <main>
+        <div class=panel>
+            <h1>Admin sign in</h1>
+            <p class=mu style="margin:0 0 18px">Enter the admin password to manage results.</p>
+            <form id=f><label for=p style="font-weight:600">Password</label><input id=p type=password
+                    autocomplete=current-password autofocus><button class=btn>Sign in</button>
+                <div id=e class=er role=alert></div>
+            </form>
+            <p class=mu style="margin:14px 0 0;font-size:var(--fs-xs)"><a data-p=5100 data-u=/ class=mu>Back to the
+                    student portal</a></p>
+        </div>
+    </main>
+    <script>
+        document.querySelectorAll('[data-p]').forEach(a => a.href = 'http://' + location.hostname + ':' + a.dataset.p + a.dataset.u);
+        document.getElementById('f').onsubmit = async e => {
+            e.preventDefault(); const x = await fetch('/admin/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ password: document.getElementById('p').value }) }), d = await x.json();
+            if (x.ok) location.href = '/admin'; else { document.getElementById('e').textContent = d.error; document.getElementById('p').select() }
+        };
+    </script>
